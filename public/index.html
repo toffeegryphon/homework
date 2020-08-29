@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<head>
+    <title>Homework</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/1.25.0/luxon.min.js"></script>
+</head>
+<body>
+    <script src="main.js"></script>
+
+    <div id="authentication">
+        <button type="button" id="login-btn" onclick="login()">Login with Google (any, but you can get an @illinois one)</button>
+        <span id="username"></span>
+        <button type="button" id="logout-btn" class="hidden" onclick="logout()">Logout</button>
+    </div>
+    
+    <div id="authenticated" class="hidden">
+        <div id="personalization">
+            <h2>Personalization</h2>
+            <p>Please add your classes first using the Add Classes button below</p>
+            <p>My Classes: <span id="existing-classes"></span></p>
+            <button type="button" id="toggle-add-classes-btn" onclick="toggleUpdateClasses()">Set Classes</button>
+            <div id="update-classes-div" class="hidden">
+                <p>Add classes as a comma separated list (e.g. MATH231E,CS125). Updating will reset your classes to the new list.</p>
+                <input type="text" id="classes" class="upper" placeholder="Classes taken">
+                <button type="button" id="update-classes-btn" onclick="updateClasses()">Update</button>
+            </div>
+        </div>
+    
+        <div id="create">
+            <h2>Add Homework (if you want to)</h2>
+            <p>For class, please enter class name without space, with section if there is a difference (e.g. MATH231E vs MATH231A)</p>
+            <input type="text" id="class" class="upper" placeholder="Class" required pattern="[a-zA-Z0-9]+">
+            <input type="date" id="deadline-date" required>
+            <input type="time" id="deadline-time" required>
+            <label for="chicagotime">Chicago Time</label>
+            <input type="checkbox" name="chicagotime" id="chicago-time" checked>
+            <input type="text" id="homework" placeholder="Homework" required>
+            <button type="button" id="create-homework-btn" onclick="createHomework()">Create</button>
+        </div>
+    </div>
+
+    <div id="today">
+        <h2>Homework</h2>
+        <p>Currently, you must be logged in and have set your classes to retrieve homework data</p>
+        <p>IMPT all the data here is crowdsourced/user added. I will be adding for the classes I take when I have the time, but for other classes, I would be grateful if you can help to populate them. (i.e. if you don't see a homework you know that you should have here, I would be grateful if you can help put it in)</p>
+        <button type="button" id="fetch-today" onclick="fetchToday()">Today</button>
+        <button type="button" id="fetch-this-week" onclick="fetchThisWeek()">This Week</button>
+        <table id="classes-list"></table>
+    </div>
+
+    <div id="feedback">
+        <h3>Feedback (Anonymous)</h3>
+        <textarea id="feedback-area"></textarea>
+        <button type="button" id="feedback-btn" onclick="postFeedback()">Feedback</button>
+    </div>
+
+    <div>
+        <h3>Changelog and Todo</h3>
+        <ul>
+            <li>Adding search for homework by classes</li>
+            <li>Flexible date search</li>
+            <li>Striking off work that is done</li>
+            <li>Different styling for past/yet to be published HW</li>
+            <li>Prettifying</li>
+        </ul>
+    </div>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-analytics.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-firestore.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyADXE53WSCwwoZ2tE8jqhi1BRACaHir5EY",
+            authDomain: "homework-50040.firebaseapp.com",
+            databaseURL: "https://homework-50040.firebaseio.com",
+            projectId: "homework-50040",
+            storageBucket: "homework-50040.appspot.com",
+            messagingSenderId: "171599723967",
+            appId: "1:171599723967:web:5e1c61161208de239ab50a",
+            measurementId: "G-XB2P3B6DF5"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
+</body>
